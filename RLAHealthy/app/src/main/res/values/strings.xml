@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RLA Healthy</string>
+    <string name="app_title">Rahmatan Lil Alamin</string>
+    <string name="app_description">Jantung • Suhu • Gula</string>
+    <string name="patient_name">Nama Pasien</string>
+    <string name="patient_heart">Jantung</string>
+    <string name="patient_temperature">Suhu</string>
+    <string name="patient_glucose">Gula</string>
+    <string name="patient_number">#1</string>
+</resources>
