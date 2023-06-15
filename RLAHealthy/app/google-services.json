@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1030777690107",
+    "firebase_url": "https://rla-healthy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "rla-healthy",
+    "storage_bucket": "rla-healthy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030777690107:android:d1c8446c16165dfdf65d5e",
+        "android_client_info": {
+          "package_name": "com.upiyptk.rlahealthy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030777690107-t564c8olna36j5o4umtpm3ar1ks2af8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZh-1BBJ6FIbWnawdCsoDWDM7MPn1d8hM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030777690107-t564c8olna36j5o4umtpm3ar1ks2af8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
