@@ -14,15 +14,19 @@
         android:theme="@style/Theme.RLAHealthy"
         tools:targetApi="31">
         <activity
-            android:name=".DetailsActivity"
-            android:exported="false"/>
+            android:name=".PatientDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientEmergencyDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/ThemeOriginal">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
