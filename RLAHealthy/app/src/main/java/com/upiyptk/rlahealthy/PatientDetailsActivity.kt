@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 
 class PatientDetailsActivity: AppCompatActivity() {
     companion object {
@@ -27,6 +31,9 @@ class PatientDetailsActivity: AppCompatActivity() {
     private lateinit var tvPatientHeart: TextView
     private lateinit var tvPatientTemperature: TextView
     private lateinit var tvPatientGlucose: TextView
+    private lateinit var rvPatientTime: RecyclerView
+    private lateinit var ref: DatabaseReference
+    private var arrayPatientTime: ArrayList<PatientTimeData> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +46,12 @@ class PatientDetailsActivity: AppCompatActivity() {
         tvPatientHeart = findViewById(R.id.tv_patient_heart)
         tvPatientTemperature = findViewById(R.id.tv_patient_temperature)
         tvPatientGlucose = findViewById(R.id.tv_patient_glucose)
+        rvPatientTime = findViewById(R.id.rv_patient_time)
+        rvPatientTime.layoutManager = LinearLayoutManager(this)
+        rvPatientTime.setHasFixedSize(true)
+        ref = FirebaseDatabase.getInstance().reference
 
+        val patientNumber = intent.getStringExtra(EXTRA_NUMBER)
         val patientImage = when(intent.getStringExtra(EXTRA_IMAGE)) {
             "1" -> R.drawable.patient_three
             "2" -> R.drawable.patient_four
@@ -69,6 +81,27 @@ class PatientDetailsActivity: AppCompatActivity() {
         tvPatientHeart.text = patientHeart
         tvPatientTemperature.text = patientTemperature
         tvPatientGlucose.text = patientGlucose
+
+        ref.child("patientTime").orderByChild("number").equalTo(patientNumber!!.toDouble())
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    arrayPatientTime.clear()
+                    if(snapshot.exists()) {
+                        for(patient in snapshot.children) {
+                            val patientValue = patient.getValue(PatientTimeData::class.java)
+                            if(patientValue != null) {
+                                arrayPatientTime.add(patientValue)
+                            }
+                        }
+                        val patientAdapter = PatientTimeAdapter(arrayPatientTime)
+                        rvPatientTime.adapter = patientAdapter
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@PatientDetailsActivity, "Error", Toast.LENGTH_LONG).show()
+                }
+            })
 
         btnBack.setOnClickListener {
             Intent(this@PatientDetailsActivity, MainActivity::class.java).also {

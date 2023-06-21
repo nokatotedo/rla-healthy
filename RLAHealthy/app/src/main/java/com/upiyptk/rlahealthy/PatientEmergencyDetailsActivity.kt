@@ -160,13 +160,20 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
             ref.child("lastValue").child("time")
                 .get().addOnSuccessListener {
                     val time = Integer.parseInt(it.value.toString())
-                    val timeVal = LocalDate.now().toString()
+                    val dayVal = LocalDate.now().dayOfMonth
+                    val monthVal = LocalDate.now().monthValue
+                    val yearVal = LocalDate.now().year
+
                     ref.child("lastValue").child("time")
                         .setValue(time + 1)
                     ref.child("patientTime").child("t$time").child("number")
                         .setValue(numberVal)
-                    ref.child("patientTime").child("t$time").child("time")
-                        .setValue(timeVal)
+                    ref.child("patientTime").child("t$time").child("day")
+                        .setValue(dayVal)
+                    ref.child("patientTime").child("t$time").child("month")
+                        .setValue(monthVal)
+                    ref.child("patientTime").child("t$time").child("year")
+                        .setValue(yearVal)
                     ref.child("patientTime").child("t$time").child("heart")
                         .setValue(heartVal)
                     ref.child("patientTime").child("t$time").child("temperature")

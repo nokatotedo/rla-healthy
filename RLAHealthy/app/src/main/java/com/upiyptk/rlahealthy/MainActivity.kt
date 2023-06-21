@@ -95,6 +95,7 @@ class MainActivity: AppCompatActivity() {
 
     private fun getPatientDetails(patient: PatientData) {
         Intent(this@MainActivity, PatientDetailsActivity::class.java).also {
+            it.putExtra(PatientDetailsActivity.EXTRA_NUMBER, patient.number.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_IMAGE, patient.image.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_NAME, patient.name.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_GENDER, patient.gender.toString())
