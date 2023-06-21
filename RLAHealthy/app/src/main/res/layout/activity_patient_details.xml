@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    tools:context=".PatientDetailsActivity"
+    tools:context=".patient.PatientDetailsActivity"
     tools:ignore="ContentDescription">
     <ImageView
         android:id="@+id/button_back"
@@ -160,18 +160,16 @@
                 android:textAlignment="center"
                 android:text="@string/patient_time"
                 app:layout_constraintTop_toTopOf="parent"/>
-            <ScrollView
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fcv_patient_time"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/navigation_graph"
                 app:layout_constraintTop_toBottomOf="@id/tv_patient_time"
-                app:layout_constraintBottom_toBottomOf="parent">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_patient_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_patient_time"/>
-            </ScrollView>
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

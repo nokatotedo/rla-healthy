@@ -14,10 +14,10 @@
         android:theme="@style/Theme.RLAHealthy"
         tools:targetApi="31">
         <activity
-            android:name=".PatientDetailsActivity"
+            android:name=".patient.PatientDetailsActivity"
             android:exported="false"/>
         <activity
-            android:name=".PatientEmergencyDetailsActivity"
+            android:name=".patientemergency.PatientEmergencyDetailsActivity"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"

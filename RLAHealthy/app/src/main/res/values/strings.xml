@@ -8,6 +8,9 @@
     <string name="patient_gender">Kelamin</string>
     <string name="patient_age">Umur</string>
     <string name="patient_handphone">No. HP</string>
+    <string name="patient_day">Hari</string>
+    <string name="patient_month">Bulan</string>
+    <string name="patient_year">Tahun</string>
     <string name="patient_heart">Jantung</string>
     <string name="patient_temperature">Suhu</string>
     <string name="patient_glucose">Gula</string>

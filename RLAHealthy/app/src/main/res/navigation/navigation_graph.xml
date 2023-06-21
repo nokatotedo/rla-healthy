@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/patientTimeFragment">
+    <fragment
+        android:id="@+id/patientTimeFragment"
+        android:name="com.upiyptk.rlahealthy.patienttime.PatientTimeFragment"
+        android:label="fragment_patient_time"
+        tools:layout="@layout/fragment_patient_time">
+        <action
+            android:id="@+id/action_patientTimeFragment_to_patientTimeDetailsFragment"
+            app:destination="@id/patientTimeDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/patientTimeDetailsFragment"
+        android:name="com.upiyptk.rlahealthy.patienttime.PatientTimeDetailsFragment"
+        android:label="fragment_patient_time_details"
+        tools:layout="@layout/fragment_patient_time_details">
+        <action
+            android:id="@+id/action_patientTimeDetailsFragment_to_patientTimeFragment"
+            app:destination="@id/patientTimeFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"/>
+        <argument
+            android:name="patientTime"
+            app:argType="com.upiyptk.rlahealthy.patienttime.PatientTimeData"/>
+    </fragment>
+</navigation>
