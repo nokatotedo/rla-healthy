@@ -11,14 +11,16 @@
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/drop_bar.xml" value="0.1245" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/edit_bar.xml" value="0.188" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2135" />
+        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/icon_password.xml" value="0.1855" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/save_button.xml" value="0.188" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/drawable/search_bar.xml" value="0.1125" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/font/poppins.xml" value="0.10780816488307571" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_details.xml" value="0.2" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_details_new.xml" value="0.22591362126245848" />
-        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_main.xml" value="0.16" />
+        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_main.xml" value="0.19593613933236576" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_patient_details.xml" value="0.152" />
-        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_patient_emergency_details.xml" value="0.152" />
+        <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/activity_patient_emergency_details.xml" value="0.2" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/fragment_patient_time.xml" value="0.2" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/fragment_patient_time_details.xml" value="0.2" />
         <entry key="..\:/Users/dwiky/Documents/Project/Kotlin/RLA Healthy/RLAHealthy/app/src/main/res/layout/item_patient.xml" value="0.4" />

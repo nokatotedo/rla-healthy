@@ -14,4 +14,6 @@
     <string name="patient_heart">Jantung</string>
     <string name="patient_temperature">Suhu</string>
     <string name="patient_glucose">Gula</string>
+    <string name="doctor_name">Nama</string>
+    <string name="doctor_password">Kata Sandi</string>
 </resources>

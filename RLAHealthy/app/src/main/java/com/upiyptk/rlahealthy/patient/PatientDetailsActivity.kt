@@ -11,6 +11,7 @@ import com.upiyptk.rlahealthy.R
 
 class PatientDetailsActivity: AppCompatActivity() {
     companion object {
+        const val EXTRA_LOGIN = "extra_login"
         const val EXTRA_NUMBER = "extra_number"
         const val EXTRA_IMAGE = "extra_image"
         const val EXTRA_NAME = "extra_name"

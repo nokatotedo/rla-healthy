@@ -57,6 +57,7 @@ class PatientTimeDetailsFragment: Fragment() {
         btnBack = view.findViewById(R.id.button_back)
         ref = FirebaseDatabase.getInstance().reference
 
+        val login = requireActivity().intent.getStringExtra("extra_login").toString()
         val patientNumber = requireActivity().intent.getStringExtra("extra_number").toString()
         val patientName = requireActivity().intent.getStringExtra("extra_name").toString()
         val patientGender = when(requireActivity().intent.getStringExtra("extra_gender")) {
@@ -90,6 +91,14 @@ class PatientTimeDetailsFragment: Fragment() {
         tvPatientHeart.text = "${args.patientTime.heart}"
         tvPatientTemperature.text = "${args.patientTime.temperature}"
         tvPatientGlucose.text = "${args.patientTime.glucose}"
+
+        if(login == "1") {
+            btnDeletePatient.visibility = View.VISIBLE
+            btnDeletePatientTime.visibility = View.VISIBLE
+        } else {
+            btnDeletePatient.visibility = View.GONE
+            btnDeletePatientTime.visibility = View.GONE
+        }
 
         btnDeletePatient.setOnClickListener {
             if(!FunctionPack.isOnline(requireContext())) {

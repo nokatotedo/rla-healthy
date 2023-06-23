@@ -3,7 +3,9 @@ package com.upiyptk.rlahealthy
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,19 +19,26 @@ import com.upiyptk.rlahealthy.patientemergency.PatientEmergencyData
 import com.upiyptk.rlahealthy.patientemergency.PatientEmergencyDetailsActivity
 
 class MainActivity: AppCompatActivity() {
+    companion object {
+        const val EXTRA_LOGIN = "extra_login"
+    }
+
     private lateinit var svPatient: SearchView
+    private lateinit var tvPatientEmergency: TextView
     private lateinit var rvPatientEmergency: RecyclerView
     private lateinit var rvPatient: RecyclerView
     private lateinit var ref: DatabaseReference
     private var arrayPatientSearch: ArrayList<PatientData> = arrayListOf()
     private var arrayPatientEmergency: ArrayList<PatientEmergencyData> = arrayListOf()
     private var arrayPatient: ArrayList<PatientData> = arrayListOf()
+    private var login: String = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         svPatient = findViewById(R.id.sv_patient)
+        tvPatientEmergency = findViewById(R.id.tv_patient_emergency)
         rvPatientEmergency = findViewById(R.id.rv_patient_emergency)
         rvPatientEmergency.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvPatientEmergency.setHasFixedSize(true)
@@ -39,6 +48,12 @@ class MainActivity: AppCompatActivity() {
 
         svPatient.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                if(p0!!.lowercase() == "login") {
+                    Intent(this@MainActivity, LoginActivity::class.java).also {
+                        startActivity(it)
+                    }
+                }
+
                 getPatient(p0)
                 return false
             }
@@ -48,6 +63,15 @@ class MainActivity: AppCompatActivity() {
                 return false
             }
         })
+
+        login = intent.getStringExtra(EXTRA_LOGIN).toString()
+        if(login == "1") {
+            tvPatientEmergency.visibility = View.VISIBLE
+            rvPatientEmergency.visibility = View.VISIBLE
+        } else {
+            tvPatientEmergency.visibility = View.GONE
+            rvPatientEmergency.visibility = View.GONE
+        }
 
         ref = FirebaseDatabase.getInstance().reference
         ref.child("patientEmergency")
@@ -148,6 +172,7 @@ class MainActivity: AppCompatActivity() {
 
     private fun getPatientDetails(patient: PatientData) {
         Intent(this@MainActivity, PatientDetailsActivity::class.java).also {
+            it.putExtra(PatientDetailsActivity.EXTRA_LOGIN, login)
             it.putExtra(PatientDetailsActivity.EXTRA_NUMBER, patient.number.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_IMAGE, patient.image.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_NAME, patient.name.toString())
