@@ -1,5 +1,7 @@
 package com.upiyptk.rlahealthy
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +9,8 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -108,6 +112,9 @@ class MainActivity: AppCompatActivity() {
                         for(patient in snapshot.children) {
                             val patientValue = patient.getValue(PatientData::class.java)
                             if(patientValue != null) {
+                                if(patientValue.notification == 1) {
+                                    getNotification(patientValue.number!!.toInt(), patientValue.name.toString())
+                                }
                                 arrayPatient.add(patientValue)
                             }
                         }
@@ -127,6 +134,21 @@ class MainActivity: AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_LONG).show()
                 }
             })
+    }
+
+    private fun getNotification(number: Int, patient: String) {
+        val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
+
+        val builder = NotificationCompat.Builder(this, "RLA_Healthy")
+            .setContentText("$patient membutuhkan bantuan!")
+            .setSmallIcon(R.drawable.logo)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+
+        val compat = NotificationManagerCompat.from(this)
+        compat.notify(number, builder)
     }
 
     private fun getPatient(searchText: String?) {
@@ -162,6 +184,7 @@ class MainActivity: AppCompatActivity() {
 
     private fun getPatientEmergencyDetails(patient: PatientEmergencyData) {
         Intent(this@MainActivity, PatientEmergencyDetailsActivity::class.java).also {
+            it.putExtra(PatientEmergencyDetailsActivity.EXTRA_LOGIN, login)
             it.putExtra(PatientEmergencyDetailsActivity.EXTRA_HEART, patient.heart.toString())
             it.putExtra(PatientEmergencyDetailsActivity.EXTRA_TEMPERATURE, patient.temperature.toString())
             it.putExtra(PatientEmergencyDetailsActivity.EXTRA_GLUCOSE, patient.glucose.toString())

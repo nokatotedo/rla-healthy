@@ -1,5 +1,7 @@
 package com.upiyptk.rlahealthy.patientemergency
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +10,8 @@ import android.text.InputType
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.upiyptk.rlahealthy.FunctionPack
@@ -18,6 +22,7 @@ import java.time.LocalDate
 
 class PatientEmergencyDetailsActivity: AppCompatActivity() {
     companion object {
+        const val EXTRA_LOGIN = "extra_login"
         const val EXTRA_NUMBER = "extra_number"
         const val EXTRA_HEART = "extra_heart"
         const val EXTRA_TEMPERATURE = "extra_temperature"
@@ -61,6 +66,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         btnDelete = findViewById(R.id.button_delete)
         ref = FirebaseDatabase.getInstance().reference
 
+        val login = intent.getStringExtra(EXTRA_LOGIN).toString()
         val patientNumber = intent.getStringExtra(EXTRA_NUMBER)!!
         val patientHeart = intent.getStringExtra(EXTRA_HEART)
         val patientTemperature = intent.getStringExtra(EXTRA_TEMPERATURE)
@@ -102,6 +108,26 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
 
         ref.child("patientEmergency").child("p$patientNumber").child("new")
             .setValue(0)
+
+        ref.child("patient")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()) {
+                        for(patient in snapshot.children) {
+                            val patientValue = patient.getValue(PatientData::class.java)
+                            if(patientValue != null) {
+                                if(patientValue.notification == 1) {
+                                    getNotification(patientValue.number!!.toInt(), patientValue.name.toString())
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@PatientEmergencyDetailsActivity, "Error", Toast.LENGTH_LONG).show()
+                }
+            })
 
         btnSave.setOnClickListener {
             if(!FunctionPack.isOnline(this)) {
@@ -169,6 +195,8 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 .setValue(temperatureVal)
             ref.child("patient").child("p$numberVal").child("glucose")
                 .setValue(glucoseVal)
+            ref.child("patient").child("p$numberVal").child("notification")
+                .setValue(0)
 
             ref.child("lastValue").child("time")
                 .get().addOnSuccessListener {
@@ -198,7 +226,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 }
 
             ref.child("patientEmergency").child("p$patientNumber").removeValue()
-            backIntent()
+            backIntent(login)
         }
 
         btnDelete.setOnClickListener {
@@ -212,7 +240,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
             builder.setMessage("Yakin Hapus?")
             builder.setPositiveButton("Ya") { _, _ ->
                 ref.child("patientEmergency").child("p$patientNumber").removeValue()
-                backIntent()
+                backIntent(login)
             }
             builder.setNegativeButton("Tidak") { _, _ ->
                 return@setNegativeButton
@@ -225,8 +253,23 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         }
 
         btnBack.setOnClickListener {
-            backIntent()
+            backIntent(login)
         }
+    }
+
+    private fun getNotification(number: Int, patient: String) {
+        val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
+
+        val builder = NotificationCompat.Builder(this, "RLA_Healthy")
+            .setContentText("$patient membutuhkan bantuan!")
+            .setSmallIcon(R.drawable.logo)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+
+        val compat = NotificationManagerCompat.from(this)
+        compat.notify(number, builder)
     }
 
     private fun getPatient() {
@@ -290,8 +333,9 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         etPatientHandphone.setText("")
     }
 
-    private fun backIntent() {
+    private fun backIntent(login: String) {
         Intent(this@PatientEmergencyDetailsActivity, MainActivity::class.java).also {
+            it.putExtra(MainActivity.EXTRA_LOGIN, login)
             startActivity(it)
         }
     }

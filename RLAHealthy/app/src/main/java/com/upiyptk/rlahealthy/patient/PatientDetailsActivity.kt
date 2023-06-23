@@ -1,11 +1,17 @@
 package com.upiyptk.rlahealthy.patient
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 import com.upiyptk.rlahealthy.MainActivity
 import com.upiyptk.rlahealthy.R
 
@@ -30,6 +36,7 @@ class PatientDetailsActivity: AppCompatActivity() {
     private lateinit var tvPatientHeart: TextView
     private lateinit var tvPatientTemperature: TextView
     private lateinit var tvPatientGlucose: TextView
+    private lateinit var ref: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +49,29 @@ class PatientDetailsActivity: AppCompatActivity() {
         tvPatientHeart = findViewById(R.id.tv_patient_heart)
         tvPatientTemperature = findViewById(R.id.tv_patient_temperature)
         tvPatientGlucose = findViewById(R.id.tv_patient_glucose)
+        ref = FirebaseDatabase.getInstance().reference
 
+        ref.child("patient")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()) {
+                        for(patient in snapshot.children) {
+                            val patientValue = patient.getValue(PatientData::class.java)
+                            if(patientValue != null) {
+                                if(patientValue.notification == 1) {
+                                    getNotification(patientValue.number!!.toInt(), patientValue.name.toString())
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@PatientDetailsActivity, "Error", Toast.LENGTH_LONG).show()
+                }
+            })
+
+        val login = intent.getStringExtra(EXTRA_LOGIN).toString()
         val patientImage = when(intent.getStringExtra(EXTRA_IMAGE)) {
             "1" -> R.drawable.patient_three
             "2" -> R.drawable.patient_four
@@ -75,8 +104,24 @@ class PatientDetailsActivity: AppCompatActivity() {
 
         btnBack.setOnClickListener {
             Intent(this@PatientDetailsActivity, MainActivity::class.java).also {
+                it.putExtra(MainActivity.EXTRA_LOGIN, login)
                 startActivity(it)
             }
         }
+    }
+
+    private fun getNotification(number: Int, patient: String) {
+        val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
+
+        val builder = NotificationCompat.Builder(this, "RLA_Healthy")
+            .setContentText("$patient membutuhkan bantuan!")
+            .setSmallIcon(R.drawable.logo)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+
+        val compat = NotificationManagerCompat.from(this)
+        compat.notify(number, builder)
     }
 }

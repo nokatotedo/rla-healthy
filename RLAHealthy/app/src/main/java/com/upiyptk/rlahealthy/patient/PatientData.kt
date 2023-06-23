@@ -9,5 +9,6 @@ data class PatientData(
     var handphone: String? = "Error",
     var heart: Int? = null,
     var temperature: Int? = null,
-    var glucose: Int? = null
+    var glucose: Int? = null,
+    var notification: Int? = 0
 )
