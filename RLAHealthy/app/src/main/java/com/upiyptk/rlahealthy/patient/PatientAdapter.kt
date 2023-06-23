@@ -53,7 +53,7 @@ class PatientAdapter(private val list: ArrayList<PatientData>): RecyclerView.Ada
         Glide.with(holder.itemView.context)
             .load(patientImage)
             .into(holder.ivPatientImage)
-        holder.tvPatientName.text = patientName
+        holder.tvPatientName.text = "${position+1}. $patientName"
         holder.pbPatientHeart.progress = patientHeart!!
         holder.pbPatientTemperature.progress = patientTemperature!!
         holder.pbPatientGlucose.progress = patientGlucose!!

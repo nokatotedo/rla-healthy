@@ -121,6 +121,10 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 etPatientHandphone.error = "Handphone Kosong"
                 return@setOnClickListener
             }
+            if(etPatientHandphone.text.toString().first() != '0') {
+                etPatientHandphone.error = "Harap Diawali 0"
+                return@setOnClickListener
+            }
 
             val numberVal = when(cbPatientNew.isChecked) {
                 true -> Integer.parseInt(patientNumber)
@@ -137,7 +141,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 (5..9).random()
             }
             val ageVal = Integer.parseInt(etPatientAge.text.toString())
-            val handphoneVal = etPatientHandphone.text.toString()
+            val handphoneVal = etPatientHandphone.text.toString().replaceFirstChar { "+62" }
             val heartVal = Integer.parseInt(tvPatientHeart.text.toString())
             val temperatureVal = Integer.parseInt(tvPatientTemperature.text.toString())
             val glucoseVal = Integer.parseInt(tvPatientGlucose.text.toString())
@@ -149,7 +153,12 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
             ref.child("patient").child("p$numberVal").child("gender")
                 .setValue(genderVal)
             ref.child("patient").child("p$numberVal").child("image")
-                .setValue(imageVal)
+                .get().addOnSuccessListener {
+                    if(it.value.toString().isEmpty()) {
+                        ref.child("patient").child("p$numberVal").child("image")
+                            .setValue(imageVal)
+                    }
+                }
             ref.child("patient").child("p$numberVal").child("age")
                 .setValue(ageVal)
             ref.child("patient").child("p$numberVal").child("handphone")
@@ -172,6 +181,8 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                         .setValue(time + 1)
                     ref.child("patientTime").child("t$time").child("number")
                         .setValue(numberVal)
+                    ref.child("patientTime").child("t$time").child("time")
+                        .setValue(time)
                     ref.child("patientTime").child("t$time").child("day")
                         .setValue(dayVal)
                     ref.child("patientTime").child("t$time").child("month")
@@ -256,7 +267,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
 
                             ref.child("patient").child("p$_patientNumber").child("handphone")
                                 .get().addOnSuccessListener {
-                                    etPatientHandphone.setText(it.value.toString())
+                                    etPatientHandphone.setText(it.value.toString().replace("+62","0"))
                                 }
                         }
                     }

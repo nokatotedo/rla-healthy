@@ -20,7 +20,7 @@ class PatientTimeAdapter(private val list: ArrayList<PatientTimeData>): Recycler
     }
 
     override fun onBindViewHolder(holder: PatientTimeViewHolder, position: Int) {
-        list.sortWith(compareBy({ -it.year!! }, { -it.month!! }, { -it.day!! }))
+        list.sortWith(compareBy({ -it.year!! }, { -it.month!! }, { -it.day!! }, { -it.time!! }))
 
         val positionList = list[position]
 

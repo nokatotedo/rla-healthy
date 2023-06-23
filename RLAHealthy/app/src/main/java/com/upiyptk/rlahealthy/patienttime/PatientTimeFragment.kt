@@ -28,7 +28,7 @@ class PatientTimeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rvPatientTime = view.findViewById(R.id.rv_patient_time)
-        rvPatientTime.layoutManager = LinearLayoutManager(activity)
+        rvPatientTime.layoutManager = LinearLayoutManager(requireActivity())
         rvPatientTime.setHasFixedSize(true)
         ref = FirebaseDatabase.getInstance().reference
 
@@ -57,7 +57,7 @@ class PatientTimeFragment: Fragment() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), "Error", Toast.LENGTH_LONG).show()
                 }
             })
     }

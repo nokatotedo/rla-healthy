@@ -153,6 +153,7 @@ class MainActivity: AppCompatActivity() {
             it.putExtra(PatientDetailsActivity.EXTRA_NAME, patient.name.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_GENDER, patient.gender.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_AGE, patient.age.toString())
+            it.putExtra(PatientDetailsActivity.EXTRA_HANDPHONE, patient.handphone.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_HEART, patient.heart.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_TEMPERATURE, patient.temperature.toString())
             it.putExtra(PatientDetailsActivity.EXTRA_GLUCOSE, patient.glucose.toString())

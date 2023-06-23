@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PatientTimeData(
     var number: Long? = null,
+    var time: Long? = null,
     var day: Int? = null,
     var month: Int? = null,
     var year: Long? = null,
