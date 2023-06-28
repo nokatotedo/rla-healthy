@@ -4,7 +4,7 @@
     <style name="Theme.RLAHealthy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/primary</item>
@@ -38,19 +38,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/secondary</item>
-        <!-- Customize your theme here. -->
-    </style>
-    <style name="ThemeSplash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#cd615a</item>
-        <item name="colorPrimaryVariant">#cd615a</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">#cd615a</item>
-        <item name="colorSecondaryVariant">#cd615a</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#cd615a</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

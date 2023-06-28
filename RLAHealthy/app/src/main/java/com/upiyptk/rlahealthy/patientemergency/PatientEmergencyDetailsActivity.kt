@@ -180,7 +180,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 .setValue(genderVal)
             ref.child("patient").child("p$numberVal").child("image")
                 .get().addOnSuccessListener {
-                    if(it.value.toString().isEmpty()) {
+                    if(it.value == null) {
                         ref.child("patient").child("p$numberVal").child("image")
                             .setValue(imageVal)
                     }
@@ -249,7 +249,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
             val alert: AlertDialog = builder.create()
             alert.show()
             alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#212121"))
-            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#cd615a"))
+            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#FF8F80"))
         }
 
         btnBack.setOnClickListener {

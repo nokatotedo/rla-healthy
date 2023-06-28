@@ -134,7 +134,7 @@ class PatientTimeDetailsFragment: Fragment() {
             val alert: AlertDialog = builder.create()
             alert.show()
             alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#212121"))
-            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#cd615a"))
+            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#FF8F80"))
         }
 
         btnDeletePatientTime.setOnClickListener {
@@ -170,7 +170,7 @@ class PatientTimeDetailsFragment: Fragment() {
             val alert: AlertDialog = builder.create()
             alert.show()
             alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#212121"))
-            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#cd615a"))
+            alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#FF8F80"))
         }
 
         btnBack.setOnClickListener {
