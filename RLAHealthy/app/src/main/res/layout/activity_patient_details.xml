@@ -20,7 +20,7 @@
         android:id="@+id/iv_patient_image"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
         android:src="@drawable/patient_one"
         app:layout_constraintTop_toTopOf="parent"
