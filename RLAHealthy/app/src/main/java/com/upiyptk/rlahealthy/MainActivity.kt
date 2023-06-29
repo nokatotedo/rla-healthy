@@ -122,9 +122,7 @@ class MainActivity: AppCompatActivity() {
                         rvPatient.adapter = patientAdapter
                         patientAdapter.setOnItemClickCallback(object: PatientAdapter.OnItemClickCallback {
                             override fun onItemClicked(list: PatientData) {
-                                Intent(this@MainActivity, PatientDetailsActivity::class.java).also {
-                                    getPatientDetails(list)
-                                }
+                                getPatientDetails(list)
                             }
                         })
                     }
