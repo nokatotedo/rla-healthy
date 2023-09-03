@@ -63,7 +63,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/poppins"
-                android:text="Daftar Pasien IGD"
+                android:text="Data Baru"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"/>
             <androidx.recyclerview.widget.RecyclerView

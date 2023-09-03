@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.upiyptk.rlahealthy.FunctionPack
 import com.upiyptk.rlahealthy.MainActivity
+import com.upiyptk.rlahealthy.PatientRoomData
 import com.upiyptk.rlahealthy.R
 import com.upiyptk.rlahealthy.patient.PatientData
 import java.time.LocalDate
@@ -24,12 +25,14 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
     companion object {
         const val EXTRA_LOGIN = "extra_login"
         const val EXTRA_NUMBER = "extra_number"
+        const val EXTRA_ROOM = "extra_room"
         const val EXTRA_HEART = "extra_heart"
         const val EXTRA_TEMPERATURE = "extra_temperature"
         const val EXTRA_GLUCOSE = "extra_glucose"
     }
 
     private lateinit var btnBack: ImageView
+    private lateinit var tvPatientRoom: TextView
     private lateinit var cbPatientNew: CheckBox
     private lateinit var actvPatientName: AutoCompleteTextView
     private lateinit var tilPatientName: TextInputLayout
@@ -52,6 +55,7 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_patient_emergency_details)
 
         btnBack = findViewById(R.id.button_back)
+        tvPatientRoom = findViewById(R.id.tv_patient_room)
         cbPatientNew = findViewById(R.id.cb_patient_new)
         actvPatientName = findViewById(R.id.actv_patient_name)
         tilPatientName = findViewById(R.id.til_patient_name)
@@ -68,9 +72,16 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
 
         val login = intent.getStringExtra(EXTRA_LOGIN).toString()
         val patientNumber = intent.getStringExtra(EXTRA_NUMBER)!!
+        val patientRoom = intent.getStringExtra(EXTRA_ROOM)
         val patientHeart = intent.getStringExtra(EXTRA_HEART)
-        val patientTemperature = intent.getStringExtra(EXTRA_TEMPERATURE)
-        val patientGlucose = intent.getStringExtra(EXTRA_GLUCOSE)
+        val patientTemperature = intent.getDoubleExtra(EXTRA_TEMPERATURE, 0.00)
+        val patientGlucose = intent.getDoubleExtra(EXTRA_GLUCOSE, 0.00)
+
+        if(patientRoom!!.toInt() == 0) {
+            tvPatientRoom.text = "Ruangan IGD"
+        } else {
+            tvPatientRoom.text = "Ruangan $patientRoom"
+        }
 
         cbPatientNew.setOnClickListener {
             clearPatient()
@@ -103,21 +114,21 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         }
 
         tvPatientHeart.text = patientHeart
-        tvPatientTemperature.text = patientTemperature
-        tvPatientGlucose.text = patientGlucose
+        tvPatientTemperature.text = patientTemperature.toString()
+        tvPatientGlucose.text = patientGlucose.toString()
 
         ref.child("patientEmergency").child("p$patientNumber").child("new")
             .setValue(0)
 
-        ref.child("patient")
+        ref.child("patientRoom")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()) {
                         for(patient in snapshot.children) {
-                            val patientValue = patient.getValue(PatientData::class.java)
+                            val patientValue = patient.getValue(PatientRoomData::class.java)
                             if(patientValue != null) {
                                 if(patientValue.notification == 1) {
-                                    getNotification(patientValue.number!!.toInt(), patientValue.name.toString())
+                                    if(login == "1") getNotification(patientValue.room!!.toInt())
                                 }
                             }
                         }
@@ -152,6 +163,19 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(tvPatientHeart.text == "null") {
+                Toast.makeText(this@PatientEmergencyDetailsActivity, "Data Error. Harap Hapus!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if(tvPatientTemperature.text == "null") {
+                Toast.makeText(this@PatientEmergencyDetailsActivity, "Data Error. Harap Hapus!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if(tvPatientHeart.text == "null") {
+                Toast.makeText(this@PatientEmergencyDetailsActivity, "Data Error. Harap Hapus!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             val numberVal = when(cbPatientNew.isChecked) {
                 true -> Integer.parseInt(patientNumber)
                 false -> Integer.parseInt(_patientNumber)
@@ -169,8 +193,8 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
             val ageVal = Integer.parseInt(etPatientAge.text.toString())
             val handphoneVal = etPatientHandphone.text.toString().replaceFirstChar { "+62" }
             val heartVal = Integer.parseInt(tvPatientHeart.text.toString())
-            val temperatureVal = Integer.parseInt(tvPatientTemperature.text.toString())
-            val glucoseVal = Integer.parseInt(tvPatientGlucose.text.toString())
+            val temperatureVal = patientTemperature
+            val glucoseVal = patientGlucose
 
             ref.child("patient").child("p$numberVal").child("number")
                 .setValue(numberVal)
@@ -195,8 +219,6 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
                 .setValue(temperatureVal)
             ref.child("patient").child("p$numberVal").child("glucose")
                 .setValue(glucoseVal)
-            ref.child("patient").child("p$numberVal").child("notification")
-                .setValue(0)
 
             ref.child("lastValue").child("time")
                 .get().addOnSuccessListener {
@@ -257,19 +279,21 @@ class PatientEmergencyDetailsActivity: AppCompatActivity() {
         }
     }
 
-    private fun getNotification(number: Int, patient: String) {
-        val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
-        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        manager.createNotificationChannel(channel)
+    private fun getNotification(room: Int) {
+        if(room > 0) {
+            val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
+            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
 
-        val builder = NotificationCompat.Builder(this, "RLA_Healthy")
-            .setContentText("$patient membutuhkan bantuan!")
-            .setSmallIcon(R.drawable.logo)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
+            val builder = NotificationCompat.Builder(this, "RLA_Healthy")
+                .setContentText("Kamar $room membutuhkan bantuan!")
+                .setSmallIcon(R.drawable.logo)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build()
 
-        val compat = NotificationManagerCompat.from(this)
-        compat.notify(number, builder)
+            val compat = NotificationManagerCompat.from(this)
+            compat.notify(room, builder)
+        }
     }
 
     private fun getPatient() {

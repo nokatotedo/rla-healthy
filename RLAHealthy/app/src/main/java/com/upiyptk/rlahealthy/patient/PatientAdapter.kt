@@ -55,8 +55,8 @@ class PatientAdapter(private val list: ArrayList<PatientData>): RecyclerView.Ada
             .into(holder.ivPatientImage)
         holder.tvPatientName.text = "${position+1}. $patientName"
         holder.pbPatientHeart.progress = patientHeart!!
-        holder.pbPatientTemperature.progress = patientTemperature!!
-        holder.pbPatientGlucose.progress = patientGlucose!!
+        holder.pbPatientTemperature.progress = patientTemperature!!.toInt()
+        holder.pbPatientGlucose.progress = patientGlucose!!.toInt()
 
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(list[holder.adapterPosition]) }
     }

@@ -8,7 +8,6 @@ data class PatientData(
     var age: Int? = null,
     var handphone: String? = "Error",
     var heart: Int? = null,
-    var temperature: Int? = null,
-    var glucose: Int? = null,
-    var notification: Int? = 0
+    var temperature: Double? = null,
+    var glucose: Double? = null
 )

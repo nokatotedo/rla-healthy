@@ -11,6 +11,6 @@ data class PatientTimeData(
     var month: Int? = null,
     var year: Long? = null,
     var heart: Int? = null,
-    var temperature: Int? = null,
-    var glucose: Int? = null
+    var temperature: Double? = null,
+    var glucose: Double? = null
 ): Parcelable

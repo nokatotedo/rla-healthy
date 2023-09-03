@@ -69,6 +69,8 @@ class PatientTimeDetailsFragment: Fragment() {
 
         btnWhatsapp.setOnClickListener {
             startWhatsapp(patientName, patientGender, patientHandphone)
+            ref.child("patient").child("p$patientNumber").child("notification")
+                .setValue(0)
         }
 
         tvPatientDay.text = "${args.patientTime.day}"

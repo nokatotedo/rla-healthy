@@ -13,6 +13,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.upiyptk.rlahealthy.MainActivity
+import com.upiyptk.rlahealthy.PatientRoomData
 import com.upiyptk.rlahealthy.R
 
 class PatientDetailsActivity: AppCompatActivity() {
@@ -51,15 +52,17 @@ class PatientDetailsActivity: AppCompatActivity() {
         tvPatientGlucose = findViewById(R.id.tv_patient_glucose)
         ref = FirebaseDatabase.getInstance().reference
 
-        ref.child("patient")
+        val login = intent.getStringExtra(EXTRA_LOGIN).toString()
+
+        ref.child("patientRoom")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()) {
                         for(patient in snapshot.children) {
-                            val patientValue = patient.getValue(PatientData::class.java)
+                            val patientValue = patient.getValue(PatientRoomData::class.java)
                             if(patientValue != null) {
                                 if(patientValue.notification == 1) {
-                                    getNotification(patientValue.number!!.toInt(), patientValue.name.toString())
+                                    if(login == "1") getNotification(patientValue.room!!.toInt())
                                 }
                             }
                         }
@@ -71,7 +74,6 @@ class PatientDetailsActivity: AppCompatActivity() {
                 }
             })
 
-        val login = intent.getStringExtra(EXTRA_LOGIN).toString()
         val patientImage = when(intent.getStringExtra(EXTRA_IMAGE)) {
             "1" -> R.drawable.patient_three
             "2" -> R.drawable.patient_four
@@ -110,18 +112,20 @@ class PatientDetailsActivity: AppCompatActivity() {
         }
     }
 
-    private fun getNotification(number: Int, patient: String) {
-        val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
-        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        manager.createNotificationChannel(channel)
+    private fun getNotification(room: Int) {
+        if(room > 0) {
+            val channel = NotificationChannel("RLA_Healthy", "RLA Healthy", NotificationManager.IMPORTANCE_DEFAULT)
+            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
 
-        val builder = NotificationCompat.Builder(this, "RLA_Healthy")
-            .setContentText("$patient membutuhkan bantuan!")
-            .setSmallIcon(R.drawable.logo)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
+            val builder = NotificationCompat.Builder(this, "RLA_Healthy")
+                .setContentText("Kamar $room membutuhkan bantuan!")
+                .setSmallIcon(R.drawable.logo)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build()
 
-        val compat = NotificationManagerCompat.from(this)
-        compat.notify(number, builder)
+            val compat = NotificationManagerCompat.from(this)
+            compat.notify(room, builder)
+        }
     }
 }
